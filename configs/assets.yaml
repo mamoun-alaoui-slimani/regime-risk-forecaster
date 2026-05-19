@@ -1,0 +1,14 @@
+equities:
+  - SPY
+  - QQQ
+  - IWM
+  - GLD
+  - TLT
+
+macro:
+ - ^VIX
+ - ^TNX
+ - ^IRX
+ - DX-Y.NYB
+
+start_date: "2010-01-01"
