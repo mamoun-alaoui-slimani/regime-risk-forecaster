@@ -43,4 +43,24 @@ def compute_drawdown(asset):
     rolling_max = asset['Close'].cummax()
     return (asset['Close'] - rolling_max) / rolling_max
     
-print(compute_drawdown(equities))
+def compute_all_features(asset, window=20):
+    """Computes all features (returns, volatility, momentum, drawdown) for all assets
+    Args:
+        asset: DataFrame with MultiIndex columns (Close, Open, etc.)
+        window: window: int number of days over which volatility and momentum are
+                computed (20 by default)
+    Returns: DataFrame containing all features
+    """
+    returns = compute_returns(asset)
+    volatility = compute_rolling_volatility(returns, window)
+    momentum = compute_momentum(returns, window)
+    drawdown = compute_drawdown(asset)
+    
+    return pd.concat([
+        returns.add_suffix("_returns"),
+        volatility.add_suffix("_volatility"),
+        momentum.add_suffix("_momentum"),
+        drawdown.add_suffix("_drawdown"),
+    ], axis=1)
+
+print(compute_all_features(equities))
