@@ -16,8 +16,8 @@ def compute_returns(asset):
 def compute_rolling_volatility(returns, window=20):
     """Computes rolling volatility for a specified time window
     Args: 
-        returns: returns used to compute volatility
-        window: number of days over which returns standard deviation is computed
+        returns: DataFrame with returns for one or multiple indices
+        window: int number of days over which returns standard deviation is computed
                 (20 by default)
     Returns:
         DataFrame containing rolling volatility values
@@ -25,12 +25,22 @@ def compute_rolling_volatility(returns, window=20):
     return returns.rolling(window).std()
 
 def compute_momentum(returns, window=20):
-    """Computes asset momentum
+    """Computes asset momentum for a specified time window
     Args:
-        returns: returns used to compute momentum
-        window: number of days over which momentum is computed (20 by default)
+        returns: DataFrame with returns for one or multiple indices
+        window: int number of days over which momentum is computed (20 by default)
     Returns:
         DataFrame containing momentum values"""
     return returns.rolling(window).sum()
+
+def compute_drawdown(asset):
+    """Computes asset drawdown
+    Args:
+        asset: DataFrame with MultiIndex columns (Close, Open, etc.)
+    Returns:
+        DataFrame with drawdown values
+    """
+    rolling_max = asset['Close'].cummax()
+    return (asset['Close'] - rolling_max) / rolling_max
     
-print(compute_momentum(compute_returns(equities)))
+print(compute_drawdown(equities))
