@@ -24,4 +24,13 @@ def compute_rolling_volatility(returns, window=20):
     """
     return returns.rolling(window).std()
 
-print(compute_rolling_volatility(compute_returns(equities)))
+def compute_momentum(returns, window=20):
+    """Computes asset momentum
+    Args:
+        returns: returns used to compute momentum
+        window: number of days over which momentum is computed (20 by default)
+    Returns:
+        DataFrame containing momentum values"""
+    return returns.rolling(window).sum()
+    
+print(compute_momentum(compute_returns(equities)))
