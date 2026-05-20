@@ -13,3 +13,15 @@ def compute_returns(asset):
     
     return np.log(asset['Close'] / asset['Close'].shift(1))
 
+def compute_rolling_volatility(returns, window=20):
+    """Computes rolling volatility for a specified time window
+    Args: 
+        returns: returns used to compute volatility
+        window: number of days over which returns standard deviation is computed
+                (20 by default)
+    Returns:
+        DataFrame containing rolling volatility values
+    """
+    return returns.rolling(window).std()
+
+print(compute_rolling_volatility(compute_returns(equities)))
